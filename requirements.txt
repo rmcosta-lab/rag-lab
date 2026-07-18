@@ -10,3 +10,5 @@ adjustText
 sentence-transformers
 huggingface-hub
 pandas
+bm25s
+dlai_grader
