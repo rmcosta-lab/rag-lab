@@ -9,3 +9,4 @@ ipywidgets
 adjustText
 sentence-transformers
 huggingface-hub
+pandas
