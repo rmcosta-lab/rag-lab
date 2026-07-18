@@ -1,0 +1,4 @@
+together
+requests
+python-dotenv
+openai
