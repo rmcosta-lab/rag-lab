@@ -1,3 +1,4 @@
 .env
 *.pyc
 __pycache__
+module-02/models/

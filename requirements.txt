@@ -2,3 +2,10 @@ together
 requests
 python-dotenv
 openai
+numpy
+matplotlib
+scikit-learn
+ipywidgets
+adjustText
+sentence-transformers
+huggingface-hub
