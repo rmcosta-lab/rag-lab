@@ -18,8 +18,15 @@ from openai import OpenAI, DefaultHttpxClient
 
 from sentence_transformers import SentenceTransformer
 
-# Load a pretrained model from Hugging Face
-model = SentenceTransformer("BAAI/bge-base-en-v1.5", cache_folder = "../models")
+import threading
+
+# Load a pretrained model from Hugging Face.
+# device="cpu": o backend MPS (GPU Metal) do PyTorch NÃO é thread-safe e crasha o kernel
+# quando o Flask chama model.encode() concorrentemente. CPU é seguro e rápido o bastante aqui.
+model = SentenceTransformer("BAAI/bge-base-en-v1.5", cache_folder = "../models", device="cpu")
+
+# Serializa o acesso ao modelo: 1 encode por vez, mesmo com requisições concorrentes do Flask.
+_embed_lock = threading.Lock()
 
 # Custom transport to bypass SSL verification
 transport = httpx.HTTPTransport(local_address="0.0.0.0", verify=False)
@@ -195,7 +202,8 @@ def print_object_properties(obj: Union[dict, list]) -> None:
 
 # Define utility functions and classes
 def generate_embedding(prompt: str): #model: str = "BAAI/bge-base-en-v1.5", together_api_key = None, **kwargs):
-    return model.encode(prompt).tolist()
+    with _embed_lock:
+        return model.encode(prompt).tolist()
     payload = {
         "model": model,
         "input": prompt,
