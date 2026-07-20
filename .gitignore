@@ -5,3 +5,6 @@ module-02/models/
 module-03/models/
 .collections/
 .weaviate-binary/
+# Ambientes virtuais
+.venv/
+venv/
