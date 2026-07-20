@@ -12,3 +12,6 @@ huggingface-hub
 pandas
 bm25s
 dlai_grader
+weaviate-client
+flask
+FlagEmbedding

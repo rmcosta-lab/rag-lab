@@ -9,7 +9,7 @@ import logging
 import os
 from utils import generate_embedding
 # Initialize models globally to load them once
-reranker = FlagReranker('BAAI/bge-reranker-base', cache_dir=os.environ["MODEL_M3"], use_fp16=False)
+reranker = FlagReranker('cross-encoder/ms-marco-MiniLM-L-6-v2', cache_dir="../models", use_fp16=False)
 
 app = Flask(__name__)
 
@@ -111,7 +111,7 @@ log = logging.getLogger('werkzeug')
 # Set logging level (ERROR or CRITICAL suppresses routing logs)
 log.setLevel(logging.ERROR)
 def run_app():
-    app.run(host='0.0.0.0', port=5000, debug = False)
+    app.run(host='0.0.0.0', port=5001, debug = False)
 
 flask_thread = threading.Thread(target=run_app)
 flask_thread.start()
