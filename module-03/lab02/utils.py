@@ -19,7 +19,7 @@ from openai import OpenAI, DefaultHttpxClient
 from sentence_transformers import SentenceTransformer
 
 # Load a pretrained model from Hugging Face
-model = SentenceTransformer("BAAI/bge-base-en-v1.5", cache_folder = ".models")
+model = SentenceTransformer("BAAI/bge-base-en-v1.5", cache_folder = "../models")
 
 # Custom transport to bypass SSL verification
 transport = httpx.HTTPTransport(local_address="0.0.0.0", verify=False)
@@ -203,7 +203,7 @@ def generate_embedding(prompt: str): #model: str = "BAAI/bge-base-en-v1.5", toge
     }
     if (not together_api_key) and ('TOGETHER_API_KEY' not in os.environ):
         client = OpenAI(
-    api_key = '', # Set any as dlai proxy does not use it. Set the together api key if using the together endpoint
+    api_key = os.getenv("OPENAI_API_KEY"), # Set any as dlai proxy does not use it. Set the together api key if using the together endpoint
     base_url="http://proxy.dlai.link/coursera_proxy/together/", # If using together endpoint, add it here https://api.together.xyz/
    http_client=http_client, # ssl bypass to make it work via proxy calls, remove it if running with together.ai endpoint 
 )
