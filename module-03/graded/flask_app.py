@@ -9,7 +9,7 @@ import logging
 import os
 from utils import generate_embedding
 # Initialize models globally to load them once
-reranker = FlagReranker('BAAI/bge-reranker-base', cache_dir=os.environ["MODEL_M3"], use_fp16=False)
+reranker = FlagReranker('BAAI/bge-reranker-base', cache_dir="../models", use_fp16=False)
 
 app = Flask(__name__)
 
@@ -111,7 +111,30 @@ log = logging.getLogger('werkzeug')
 # Set logging level (ERROR or CRITICAL suppresses routing logs)
 log.setLevel(logging.ERROR)
 def run_app():
-    app.run(host='0.0.0.0', port=5000, debug = False)
+    app.run(host='0.0.0.0', port=5001, debug=False)
 
-flask_thread = threading.Thread(target=run_app)
-flask_thread.start()
+
+def _vectorizer_ready(url="http://127.0.0.1:5001/.well-known/ready"):
+    try:
+        import requests
+        return requests.get(url, timeout=1).ok
+    except Exception:
+        return False
+
+
+def start_vectorizer(wait_timeout=60):
+    """Sobe o vectorizer Flask na 5001 se ainda não estiver rodando e espera ficar ready.
+    Idempotente: seguro chamar/importar mais de uma vez."""
+    import time
+    if not _vectorizer_ready():
+        threading.Thread(target=run_app, daemon=True).start()
+    for _ in range(wait_timeout):
+        if _vectorizer_ready():
+            print("Vectorizer ready on http://127.0.0.1:5001")
+            return
+        time.sleep(1)
+    raise RuntimeError("Flask vectorizer não ficou ready na porta 5001")
+
+
+# Auto-start no import (idempotente)
+start_vectorizer()

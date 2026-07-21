@@ -32,8 +32,8 @@ with suppress_subprocess_output():
         environment_variables={
             "ENABLE_API_BASED_MODULES": "true",
             "ENABLE_MODULES": 'text2vec-transformers,reranker-transformers',
-            "TRANSFORMERS_INFERENCE_API":"http://127.0.0.1:5000/",
-            "RERANKER_INFERENCE_API":"http://127.0.0.1:5000/"
+            "TRANSFORMERS_INFERENCE_API":"http://127.0.0.1:5001",
+            "RERANKER_INFERENCE_API":"http://127.0.0.1:5001/"
         }
     )
 

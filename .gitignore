@@ -8,3 +8,4 @@ module-03/models/
 # Ambientes virtuais
 .venv/
 venv/
+module-03/graded/.DS_Store

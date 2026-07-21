@@ -10,7 +10,7 @@ from openai import OpenAI, DefaultHttpxClient
 from sentence_transformers import SentenceTransformer
 
 # Load a pretrained model from Hugging Face
-model = SentenceTransformer("BAAI/bge-base-en-v1.5", cache_folder = ".models")
+model = SentenceTransformer("BAAI/bge-base-en-v1.5", cache_folder = "../models")
 
 # Custom transport to bypass SSL verification
 transport = httpx.HTTPTransport(local_address="0.0.0.0", verify=False)
@@ -445,3 +445,34 @@ def display_widget(llm_call_func, semantic_search_retrieve, bm25_retrieve, hybri
     # Display rows with outputs
     display(hbox_outputs1)
     display(hbox_outputs2)
+
+import subprocess
+from contextlib import contextmanager
+import os
+
+from typing import Iterable, Dict, Any
+import time
+
+@contextmanager
+def suppress_subprocess_output():
+    """
+    Context manager that suppresses the standard output and error 
+    of any subprocess.Popen calls within this context.
+    """
+    # Store the original Popen
+    original_popen = subprocess.Popen
+
+    def patched_popen(*args, **kwargs):
+        # Redirect the stdout and stderr to subprocess.DEVNULL
+        kwargs['stdout'] = subprocess.DEVNULL
+        kwargs['stderr'] = subprocess.DEVNULL
+        return original_popen(*args, **kwargs)
+
+    try:
+        # Apply the patch by replacing subprocess.Popen with patched_popen
+        subprocess.Popen = patched_popen
+        # Yield control back to the context
+        yield
+    finally:
+        # Ensure that the original Popen method is restored
+        subprocess.Popen = original_popen
