@@ -11,3 +11,4 @@ module-03/models/
 venv/
 module-03/graded/.DS_Store
 module-03/graded/data/bbc_export.joblib
+.models

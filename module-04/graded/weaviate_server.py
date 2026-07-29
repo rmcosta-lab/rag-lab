@@ -27,12 +27,12 @@ def suppress_subprocess_output():
         subprocess.Popen = original_popen
 with suppress_subprocess_output():
     client = weaviate.connect_to_embedded(
-        persistence_data_path="/home/jovyan/data/collections/collections_assignment_4/",
+        persistence_data_path="./.collections/collections_assignment_4/",
         #version="1.28.3",
         environment_variables={
             "ENABLE_API_BASED_MODULES": "true",
             "ENABLE_MODULES": 'text2vec-transformers',
-            "TRANSFORMERS_INFERENCE_API":"http://127.0.0.1:5000/"
+            "TRANSFORMERS_INFERENCE_API":"http://127.0.0.1:5001/"
         }
     )
 

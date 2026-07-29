@@ -108,7 +108,7 @@ log = logging.getLogger('werkzeug')
 # Set logging level (ERROR or CRITICAL suppresses routing logs)
 log.setLevel(logging.ERROR)
 def run_app():
-    app.run(host='0.0.0.0', port=5000, debug = False)
+    app.run(host='0.0.0.0', port=5001, debug = False)
 
 flask_thread = threading.Thread(target=run_app)
 flask_thread.start()
